@@ -1,0 +1,23 @@
+{
+  "name": "toldyouso",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SohamJog/toldyouso.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SohamJog/toldyouso/issues"
+  },
+  "homepage": "https://github.com/SohamJog/toldyouso#readme",
+  "dependencies": {
+    "@polybase/auth": "^0.3.32",
+    "@polybase/client": "^0.3.32"
+  }
+}

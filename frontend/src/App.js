@@ -25,6 +25,8 @@ export const App = () => {
   
   const [user, setUser] = useState(null);
   const [wallet, setWallet] = useState(null);
+
+  
   // create a function for random string for a tag
   function randomString() {
     var length = 32;
@@ -38,7 +40,8 @@ export const App = () => {
   async function createQuestion(name) {
     let tag = randomString();
     try {
-      await polybase.collection("Question").create([tag, name]);
+      
+      await polybase.collection("Question").create([tag, name, wallet]);
     }
     catch (e) {
       console.log(e);
@@ -47,15 +50,16 @@ export const App = () => {
 
   async function login() {
 
-
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
     const account = accounts[0];
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
     const walletTemp = await signer.getAddress();
+
     setWallet(walletTemp);
-    console.log("wallet:");
-    console.log(walletTemp);
+    console.log("wallet: ", walletTemp);
+    //console.log("wallet:");
+   // console.log(walletTemp);
     polybase.signer(async (data) => {
       return {
         h: 'eth-personal-sign',
@@ -63,19 +67,31 @@ export const App = () => {
       };
     });
     console.log("logged in");
-    const records = await polybase.collection("User").where("wallet", "==", walletTemp).get();
+    let records = await polybase.collection("User").where("wallet", "==", walletTemp).get();
     console.log(records);
+    //check if records is empty
+    
+    if (records.data == null || records.data.length == 0) {
+      console.log("creating user...");
+      createUser(walletTemp);
+    }
+    records = await polybase.collection("User").where("wallet", "==", walletTemp).get();
+
+    setUser(records.data[0]);
   }
 
   async function logout() {
+    console.log(user)
     polybase.signer(null);
+    setUser(null);
     console.log("logged out");
   }
 
-  async function createUser() {
+  async function createUser(walletAddress) {
     let tag = randomString();
     try {
-      await polybase.collection("User").create([tag, wallet]);
+
+      await polybase.collection("User").create([tag, walletAddress]);
       //const data = await polybase.collection("User").record(tag).get();
       //console.log(data)
     }
@@ -85,20 +101,39 @@ export const App = () => {
 
   }
 
+
   //deletes a specific record currently hardcoded
   async function deleteUser() {
     try {
-      await polybase.collection("User").record("t8Wsn3BE5PuiW42hZSp6NutwLHQbfGPc").call("deleteUser");
+      await polybase.collection("User").record("Ubqzl2RhmfEYgwHLxzI1yWfA3We5eMf9").call("deleteUser");
       console.log("deleted user")
     }
     catch (e) {
       console.log(e);
     }
   }
+
+
+
+  async function clearQuestions() {
+    let records = await polybase.collection("Question").get();
+    //console.log(records.data)
+
+    for (let i = 0; i < records.data.length; i++) {
+      //delete the record
+      //console.log(records.data[i])
+      await polybase.collection("Question").record(records.data[i].data.id).call("deleteQuestion");
+    }
+  }
+
+ 
+  
   
   return (
     <div>
-      {user? <Dashboard/>:<Landing/>}
+      //add props to dashboard like createQuestion
+      {user? <Dashboard 
+      createQuestion = {createQuestion} polybase = {polybase}  /> :<Landing/>}
       <button onClick={()=>login()}>
          Login!
        </button>
@@ -108,6 +143,15 @@ export const App = () => {
        <button onClick={()=>deleteUser()}>
           Delete User!
         </button>
+        <button onClick={()=>logout()}>Logout!</button>
+
+        <button onClick={()=>createQuestion("Whats in a name?")}>
+         Create Question!
+       </button>
+        <button onClick={()=>clearQuestions()}>
+          Clear Questions!
+        </button>
+        {/* <button onClick={()=>printAll()}>Get all questions</button> */}
       </div>
     
     

@@ -42,6 +42,7 @@ function Dashboard(props) {
           <h2>Questions</h2>
           <ul>
             {questions.map((question) => (
+              //display the question, and add a form to answer the question
               <li key={question.data.id}>{question.data.name}</li>
             ))}
           </ul>

@@ -26,7 +26,7 @@ export const App = () => {
   const [user, setUser] = useState(null);
   const [wallet, setWallet] = useState(null);
 
-  
+
   // create a function for random string for a tag
   function randomString() {
     var length = 32;
@@ -37,6 +37,10 @@ export const App = () => {
   }
 
 
+  /**
+   * 
+   * @param {*} name
+   */
   async function createQuestion(name) {
     let tag = randomString();
     try {
@@ -46,8 +50,11 @@ export const App = () => {
     catch (e) {
       console.log(e);
     }
-  }
+  } /* createQuestion() */
 
+  /*
+  *
+  */
   async function login() {
 
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -78,14 +85,19 @@ export const App = () => {
     records = await polybase.collection("User").where("wallet", "==", walletTemp).get();
 
     setUser(records.data[0]);
-  }
+  } /* login() */
 
+
+  /*
+  *
+  */
   async function logout() {
     console.log(user)
     polybase.signer(null);
     setUser(null);
     console.log("logged out");
-  }
+  } /* logout() */
+
 
   async function createUser(walletAddress) {
     let tag = randomString();
@@ -98,8 +110,7 @@ export const App = () => {
     catch (e) {
       console.log(e);
     }
-
-  }
+  } /* createUser() */
 
 
   //deletes a specific record currently hardcoded
@@ -111,7 +122,7 @@ export const App = () => {
     catch (e) {
       console.log(e);
     }
-  }
+  } /* deleteUser() */
 
 
 
@@ -124,7 +135,7 @@ export const App = () => {
       //console.log(records.data[i])
       await polybase.collection("Question").record(records.data[i].data.id).call("deleteQuestion");
     }
-  }
+  } /* clearQuestions() */
 
  
   

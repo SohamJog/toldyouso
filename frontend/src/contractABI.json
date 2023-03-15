@@ -1,0 +1,115 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "_commitment",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_revealTime",
+				"type": "uint256"
+			}
+		],
+		"name": "commitMessage",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "messageCount",
+				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "sender",
+				"type": "address"
+			}
+		],
+		"name": "MessageCommitted",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "messageCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "messages",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "messageId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "commitment",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "uint256",
+				"name": "revealTimeStamp",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_messageId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_message",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_randomness",
+				"type": "string"
+			}
+		],
+		"name": "revealMessage",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]

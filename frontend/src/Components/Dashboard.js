@@ -40,6 +40,7 @@ function Dashboard(props) {
       {questions.length > 0 && (
         <div>
           <h2>Questions</h2>
+          //also add an option to answer the question
           <ul>
             {questions.map((question) => (
               //display the question, and add a form to answer the question

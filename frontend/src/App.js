@@ -6,6 +6,18 @@ import { ethers } from 'ethers';
 import * as polybase_auth from "@polybase/auth";
 import Landing from "./Components/Landing.js";
 import Dashboard from "./Components/Dashboard.js";
+import contractABI from "./contractABI.json";
+const { keccak256 } = require("@ethersproject/keccak256");
+const { toUtf8Bytes } = require("@ethersproject/strings");
+
+
+
+const contractAddress = "0xCc22175aeC868a7A2e8DD00a6E848F78C51971FB"; // Replace with your contract address
+const provider = new ethers.providers.Web3Provider(window.ethereum);
+const signer = provider.getSigner();
+const contract = new ethers.Contract(contractAddress, contractABI, signer);
+
+
 
 const polybase = new Polybase({
   defaultNamespace: "pk/0xef0bffa8495694673bf3c1c01413e5ffe987b2fdc47a37b594f5688953c2d53dfc2d2f0a10b91d96354eaac73f6644702b0d7dfbc387dfa632938854eefcf3ef/test_app",
@@ -25,6 +37,15 @@ export const App = () => {
   
   const [user, setUser] = useState(null);
   const [wallet, setWallet] = useState(null);
+
+  
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+      setWallet(JSON.parse(savedUser).data.wallet);
+    }
+  }, []);
 
 
   // create a function for random string for a tag
@@ -85,6 +106,7 @@ export const App = () => {
     records = await polybase.collection("User").where("wallet", "==", walletTemp).get();
 
     setUser(records.data[0]);
+    localStorage.setItem("user", JSON.stringify(records.data[0]));
   } /* login() */
 
 
@@ -95,6 +117,7 @@ export const App = () => {
     console.log(user)
     polybase.signer(null);
     setUser(null);
+    localStorage.removeItem("user");
     console.log("logged out");
   } /* logout() */
 
@@ -137,8 +160,42 @@ export const App = () => {
     }
   } /* clearQuestions() */
 
+  /*
+  * Commit a hunch to the blockchain
+  */
+  async function commitHunch(statement, revealDate) {
+    const random  = randomString();
+    try {
+      //console log all 4 parameters in one line 
+      console.log("random: ", random, "statement: ", statement, "revealDate: ", revealDate, "wallet: ", wallet);
+
+      let pubkey = (wallet) 
+      if (!wallet){
+       pubkey = (JSON.parse(localStorage.getItem("user")).data.wallet);
+      }
+      console.log(JSON.parse(localStorage.getItem("user")));
+      await polybase.collection("Hunch").create([random, statement, revealDate, pubkey]);
+    }
+    catch (e) {
+      console.log(e);
+    }
+    const commitment = keccak256(
+      toUtf8Bytes(statement + random)
+    );
+    await contract.commitMessage(commitment, revealDate 
+      //   {
+      //   from: account,
+      // }
+      );
+  } /* commitHunch() */
  
-  
+  /*
+  *
+  */
+  async function test () {
+    const messageCount = await contract.messageCount();
+    console.log('Message count:', messageCount);
+  } /* test() */
   
   return (
     <div>
@@ -148,9 +205,7 @@ export const App = () => {
       <button onClick={()=>login()}>
          Login!
        </button>
-       <button onClick={()=>createUser()}>
-         Create User!
-       </button>
+       
        <button onClick={()=>deleteUser()}>
           Delete User!
         </button>
@@ -161,6 +216,12 @@ export const App = () => {
        </button>
         <button onClick={()=>clearQuestions()}>
           Clear Questions!
+        </button>
+        <button onClick={()=>test()}>
+          Test!
+        </button>
+        <button onClick={()=>commitHunch("Brownies", 110000)}>
+          Generate Hunch
         </button>
         {/* <button onClick={()=>printAll()}>Get all questions</button> */}
       </div>

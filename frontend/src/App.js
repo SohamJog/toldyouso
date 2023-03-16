@@ -1,3 +1,4 @@
+import "./App.css";
 import React, { useState, useEffect } from "react";
 import { PolybaseProvider, usePolybase, useDocument } from "@polybase/react";
 import { Polybase } from "@polybase/client";
@@ -12,23 +13,11 @@ const { toUtf8Bytes } = require("@ethersproject/strings");
 
 
 
-const contractAddress = "0xCc22175aeC868a7A2e8DD00a6E848F78C51971FB"; // Replace with your contract address
+
+const contractAddress = "0xCc22175aeC868a7A2e8DD00a6E848F78C51971FB"; // contract address
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 const signer = provider.getSigner();
 const contract = new ethers.Contract(contractAddress, contractABI, signer);
-
-
-
-const polybase = new Polybase({
-  defaultNamespace: "pk/0xef0bffa8495694673bf3c1c01413e5ffe987b2fdc47a37b594f5688953c2d53dfc2d2f0a10b91d96354eaac73f6644702b0d7dfbc387dfa632938854eefcf3ef/test_app",
-  // signer: (data) => {
-  //   return (
-  //     {
-  //     h: 'eth-personal-sign',
-  //     sig: ethPersonalSign(wallet.privateKey(), data),
-  //     })
-  // }
-});
 
 
 
@@ -38,6 +27,9 @@ export const App = () => {
   const [user, setUser] = useState(null);
   const [wallet, setWallet] = useState(null);
 
+  const polybase = new Polybase({
+    defaultNamespace: "pk/0xef0bffa8495694673bf3c1c01413e5ffe987b2fdc47a37b594f5688953c2d53dfc2d2f0a10b91d96354eaac73f6644702b0d7dfbc387dfa632938854eefcf3ef/test_app",
+  });
   
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
@@ -101,7 +93,7 @@ export const App = () => {
     
     if (records.data == null || records.data.length == 0) {
       console.log("creating user...");
-      createUser(walletTemp);
+      await createUser(walletTemp);
     }
     records = await polybase.collection("User").where("wallet", "==", walletTemp).get();
 
@@ -139,7 +131,7 @@ export const App = () => {
   //deletes a specific record currently hardcoded
   async function deleteUser() {
     try {
-      await polybase.collection("User").record("Ubqzl2RhmfEYgwHLxzI1yWfA3We5eMf9").call("deleteUser");
+      await polybase.collection("User").record("sMBLR1g4Li8fcyiutINpKwO3LuTc3UQE").call("deleteUser");
       console.log("deleted user")
     }
     catch (e) {
@@ -148,7 +140,9 @@ export const App = () => {
   } /* deleteUser() */
 
 
-
+  /*
+  * Delete all questions 
+  */
   async function clearQuestions() {
     let records = await polybase.collection("Question").get();
     //console.log(records.data)
@@ -196,16 +190,39 @@ export const App = () => {
     const messageCount = await contract.messageCount();
     console.log('Message count:', messageCount);
   } /* test() */
-  
+
+
+  /*
+  * Sets the name of the user
+  */
+ async function setName (name) {
+  console.log(user.data.id);
+    await polybase.collection("User").record(user.data.id).call("setName", [name]);
+ } /* setName() */
+
+ /*
+ * Adds a friend 
+ */
+  async function addFriend (friend) {
+    await polybase.collection("User").record(user.data.id).call("addFriend", [friend]);
+  } /* addFriend() */ 
+
   return (
     <div>
-      //add props to dashboard like createQuestion
       {user? <Dashboard 
-      createQuestion = {createQuestion} polybase = {polybase}  /> :<Landing/>}
+      createQuestion = {createQuestion} polybase = {polybase} logout = {logout} setName = {setName} user = {user} addFriend = {addFriend} commitHunch = {commitHunch} wallet = {wallet}
+        /> :<Landing
+        login = {login}
+        />}
+
       <button onClick={()=>login()}>
          Login!
        </button>
-       
+      
+        <button onClick={() => addFriend("0x918e61236aC6FbB5EAa57a88709E2Fa43E932DE1")}>Add friend!</button>
+        
+        
+
        <button onClick={()=>deleteUser()}>
           Delete User!
         </button>

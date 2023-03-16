@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import logo from '../Assets/logo_2.png';
 import Profile from './Profile.js';
+import Private from "./Private.js";
 
 function Dashboard(props) {
   const [question, setQuestion] = useState("");
   const [questions, setQuestions] = useState([]);
-  
+
 
   useEffect(() => {
     getAllQuestions();
@@ -31,6 +32,10 @@ function Dashboard(props) {
 
   return (
     <div>
+
+    <Private
+     user = {props.user}
+    />
 
      <Profile setName = {props.setName}
       user = {props.user}

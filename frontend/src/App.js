@@ -128,6 +128,7 @@ export const App = () => {
   } /* createUser() */
 
 
+
   //deletes a specific record currently hardcoded
   async function deleteUser() {
     try {
@@ -155,33 +156,45 @@ export const App = () => {
   } /* clearQuestions() */
 
   /*
-  * Commit a hunch to the blockchain
+  * Commit a hunch to the blockchain. Polybase functionality is commented out for now
   */
-  async function commitHunch(statement, revealDate) {
-    const random  = randomString();
+  async function commitHunch(statement) {
     try {
-      //console log all 4 parameters in one line 
-      console.log("random: ", random, "statement: ", statement, "revealDate: ", revealDate, "wallet: ", wallet);
-
-      let pubkey = (wallet) 
-      if (!wallet){
-       pubkey = (JSON.parse(localStorage.getItem("user")).data.wallet);
-      }
-      console.log(JSON.parse(localStorage.getItem("user")));
-      await polybase.collection("Hunch").create([random, statement, revealDate, pubkey]);
+      /*
+      USER: 
+      {"data":{"friends":["0x6ea5CB879208496D27aCfc6319eCD3Dad31fd717"],"id":"tRzjTFIn0QzME9VCo1tisOSlxcejbvms","name":"Amod","publicKey":{"alg":"ES256K","crv":"secp256k1","kty":"EC","use":"sig","x":"9XliR0PkZ3gU5AipzqjKVz_GAaV9Jd1-24VYqcw80tI=","y":"4zgOwfYXY5ixPcRBrwmC0iKpNT1mygle_cZaF3Ikg9Q="},"wallet":"0x918e61236aC6FbB5EAa57a88709E2Fa43E932DE1"},"block":{"hash":"0x0000000000000000000000000000000000000000000000000000000000000000"}}
+      */
+      const random  = randomString();
+      const pubkey = JSON.parse(localStorage.getItem("user")).data.publicKey;
+      const name = statement;
+      const created = Math.floor(Date.now() / 1000);
+      
+      await polybase.collection("Prediction").create([random, pubkey, name, created]);
+      
+      console.log("created prediction");
+      //await polybase.collection("Hunch").create([random, statement, revealDate, pubkey]);
     }
     catch (e) {
       console.log(e);
     }
+
+    /*
     const commitment = keccak256(
       toUtf8Bytes(statement + random)
     );
-    await contract.commitMessage(commitment, revealDate 
-      //   {
-      //   from: account,
-      // }
-      );
+    await contract.commitMessage(commitment, 0);
+    */
+
   } /* commitHunch() */
+
+  /*
+  * Reveal a hunch to the blockchain.
+  */
+  async function revealHunch() {
+    const prediction = await polybase.collection("Prediction").get();
+    console.log(prediction);
+  }
+
  
   /*
   *
@@ -208,9 +221,9 @@ export const App = () => {
   } /* addFriend() */ 
 
   return (
-    <div>
+    <div className="bg-teal-100">
       {user? <Dashboard 
-      createQuestion = {createQuestion} polybase = {polybase} logout = {logout} setName = {setName} user = {user} addFriend = {addFriend} commitHunch = {commitHunch} wallet = {wallet}
+      createQuestion = {createQuestion} polybase = {polybase} logout = {logout} setName = {setName} user = {user} addFriend = {addFriend} wallet = {wallet}
         /> :<Landing
         login = {login}
         />}
@@ -237,8 +250,11 @@ export const App = () => {
         <button onClick={()=>test()}>
           Test!
         </button>
-        <button onClick={()=>commitHunch("Brownies", 110000)}>
-          Generate Hunch
+        <button onClick={()=>commitHunch("Brandom")}>
+          Generate Hunch!
+        </button>
+        <button onClick={()=>revealHunch()}>
+          Reveal Hunch
         </button>
         {/* <button onClick={()=>printAll()}>Get all questions</button> */}
       </div>

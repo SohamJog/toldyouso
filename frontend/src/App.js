@@ -1,6 +1,5 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
-import { PolybaseProvider, usePolybase, useDocument } from "@polybase/react";
 import { Polybase } from "@polybase/client";
 import { ethPersonalSign } from '@polybase/eth'
 import { ethers } from 'ethers';
@@ -164,6 +163,7 @@ export const App = () => {
       USER: 
       {"data":{"friends":["0x6ea5CB879208496D27aCfc6319eCD3Dad31fd717"],"id":"tRzjTFIn0QzME9VCo1tisOSlxcejbvms","name":"Amod","publicKey":{"alg":"ES256K","crv":"secp256k1","kty":"EC","use":"sig","x":"9XliR0PkZ3gU5AipzqjKVz_GAaV9Jd1-24VYqcw80tI=","y":"4zgOwfYXY5ixPcRBrwmC0iKpNT1mygle_cZaF3Ikg9Q="},"wallet":"0x918e61236aC6FbB5EAa57a88709E2Fa43E932DE1"},"block":{"hash":"0x0000000000000000000000000000000000000000000000000000000000000000"}}
       */
+     await login();
       const random  = randomString();
       const pubkey = JSON.parse(localStorage.getItem("user")).data.publicKey;
       const name = statement;
@@ -191,6 +191,7 @@ export const App = () => {
   * Reveal a hunch to the blockchain.
   */
   async function revealHunch() {
+    await login();
     const prediction = await polybase.collection("Prediction").get();
     console.log(prediction);
   }

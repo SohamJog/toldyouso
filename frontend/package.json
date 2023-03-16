@@ -5,6 +5,7 @@
   "dependencies": {
     "@ethersproject/keccak256": "^5.7.0",
     "@ethersproject/strings": "^5.7.0",
+    "@polybase/client": "^0.3.35",
     "@polybase/react": "^0.3.32",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

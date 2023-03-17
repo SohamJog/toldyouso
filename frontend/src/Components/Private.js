@@ -23,6 +23,8 @@ function Private(props) {
 
   return (
     <div className="max-w-2xl mx-auto mt-12">
+
+      <h1 className="text-3xl font-bold mb-4">What's on your mind?</h1>
       <div className="border border-gray-300 rounded-lg px-4 py-6">
         <div className="flex items-center mb-4">
           <div>
@@ -48,6 +50,11 @@ function Private(props) {
         </form>
 
         
+
+        <div className='py-12'>
+          <h2 className="text-2xl font-bold mb-4">Your unreleased predictions:</h2>
+        </div>
+
 
         <div className="flex justify-between items-center mt-4">
           <div className="flex flex-col space-y-4 w-full lg:w-1/2">

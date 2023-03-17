@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 //import index.css
 import '../index.css';
 
 function Profile(props) {
   const user = props.user.data;
+  const friendsHunch = props.friendsHunch;
+
+  
+
   const [newFriend, setNewFriend] = useState('');
   const [newUsername, setNewUsername] = useState('');
 
@@ -23,7 +27,7 @@ function Profile(props) {
   };
 
   return (
-    <div className="bg-teal-100 min-h-screen">
+    <div className="bg-teal-100 min-h-screen justify-center">
       
 
       <div className="container mx-auto px-10 py-12">
@@ -64,7 +68,32 @@ function Profile(props) {
           </div>
         </div>
       </div>
-      
+
+      <div className="container mx-auto px-10 ">
+        <div className="flex flex-col items-center justify-center mb-20">
+          <h2 className="text-4xl font-bold mb-4">Here's what your friends predicted!</h2>
+        </div>
+      </div>
+
+
+      <div className="flex justify-center mt-4">
+        <div className="flex flex-col space-y-4">
+          {props.friendsHunch.map((hunch, index) => (
+            <div key={index} className="bg-white shadow-lg rounded-md p-4 text-center">
+              <div className="flex items-start">
+                <div>
+                  <p className="text-xs text-gray-500">{new Date(hunch.data.created * 1000).toLocaleString()}</p>
+                </div>
+              </div>
+              <div className="mt-2">
+                <p className="text-sm font-normal text-gray-800">{hunch.data.name}</p>
+                <p className="text-xs text-gray-500">{hunch.data.owner}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
     </div>
   );
 }

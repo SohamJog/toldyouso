@@ -247,6 +247,7 @@ export const App = () => {
     await polybase.collection("User").record(user.data.id).call("addFriend", [friend]);
   } /* addFriend() */ 
 
+  
   return (
     <div className="bg-teal-100">
       {user? <Dashboard 
@@ -256,12 +257,17 @@ export const App = () => {
         login = {login}
         
         />}
+      </div>
+      );
+    };
 
+
+{/* 
       <button onClick={()=>login()}>
          Login!
-       </button>
+       </button> */}
       
-        <button onClick={() => addFriend("0x918e61236aC6FbB5EAa57a88709E2Fa43E932DE1")}>Add friend!</button>
+        {/* <button onClick={() => addFriend("0x918e61236aC6FbB5EAa57a88709E2Fa43E932DE1")}>Add friend!</button>
         
         
 
@@ -283,12 +289,10 @@ export const App = () => {
           Generate Hunch!
         
         
-        </button>
-        {/* <button onClick={()=>printAll()}>Get all questions</button> */}
-      </div>
+        </button> */}
+
     
-  );
-};
+  
 
 export default App;
 

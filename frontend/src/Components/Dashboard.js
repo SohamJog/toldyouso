@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import logo from '../Assets/logo_2.png';
 import Profile from './Profile.js';
 import Private from "./Private.js";
+import Navbar from "./Navbar.js";
+
+
 
 function Dashboard(props) {
   const [question, setQuestion] = useState("");
@@ -11,31 +14,31 @@ function Dashboard(props) {
 
 
   useEffect(() => {
-    getAllQuestions();
+    //getAllQuestions();
     getHunch();
     getFriendsHunch();
     //console.log(questions);
   }, []);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    props.createQuestion(question);
-    setQuestion(""); // Clear the input after submit
-  };
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   props.createQuestion(question);
+  //   setQuestion(""); // Clear the input after submit
+  // };
 
-  const handleChange = (event) => {
-    setQuestion(event.target.value);
-  };
+  // const handleChange = (event) => {
+  //   setQuestion(event.target.value);
+  // };
   
   /*
   * Return all questions temporary might delete
   */
-  async function getAllQuestions() {
-    let records = await props.polybase.collection("Question").get();
-    console.log(records.data)
-    //console.log(records.data)
-    setQuestions(records.data);
-  } /* getAllQuestions() */
+  // async function getAllQuestions() {
+  //   let records = await props.polybase.collection("Question").get();
+  //   console.log(records.data)
+  //   //console.log(records.data)
+  //   setQuestions(records.data);
+  // } /* getAllQuestions() */
 
   /*
   * Get all the revealed predictions of friends
@@ -76,6 +79,18 @@ function Dashboard(props) {
 
   return (
     <div>
+    
+    <Navbar
+      logout = {props.logout}
+      logo = {logo}
+    />
+    
+    <Profile setName = {props.setName}
+      user = {props.user}
+      addFriend = {props.addFriend}
+      friendsHunch = {friendsHunch}
+      />
+    <div className="border-t-2 border-gray-500 my-8"></div>
 
     <Private
      user = {props.user}
@@ -84,19 +99,15 @@ function Dashboard(props) {
      revealHunch = {props.revealHunch}
     />
 
-     <Profile setName = {props.setName}
-      user = {props.user}
-      addFriend = {props.addFriend}
-      friendsHunch = {friendsHunch}
-      />
-
-    <div className="bg-teal-200 flex justify-between items-center snap-start">
-    <div className="flex items-center">
-      <img className="w-64 h-20 mr-2" src={logo} alt="Toldyouso Logo"/>
-    </div>
-    <button onClick={()=>props.logout()} className="px-4 py-2 rounded-md font-bold bg-white text-cyan-600 mx-10 my-6 ">Logout</button>
+    
   </div>
-    <div className="bg-teal-100 text-black min-h-screen py-8 px-4">
+  );
+}
+
+export default Dashboard;
+
+
+{/* <div className="bg-teal-100 text-black min-h-screen py-8 px-4">
      
     <h1 className="text-4xl font-bold mb-8">Hello user</h1>
     <form onSubmit={handleSubmit} className="mb-8">
@@ -132,9 +143,4 @@ function Dashboard(props) {
       </div>
       </div>
     )}
-  </div>
-  </div>
-  );
-}
-
-export default Dashboard;
+  </div> */}

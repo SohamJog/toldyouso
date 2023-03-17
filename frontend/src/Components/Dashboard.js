@@ -6,11 +6,15 @@ import Private from "./Private.js";
 function Dashboard(props) {
   const [question, setQuestion] = useState("");
   const [questions, setQuestions] = useState([]);
+  const [hunches, setHunches] = useState([]);
+  const [friendsHunch, setFriendsHunch] = useState([]);
 
 
   useEffect(() => {
     getAllQuestions();
-    console.log(questions);
+    getHunch();
+    getFriendsHunch();
+    //console.log(questions);
   }, []);
 
   const handleSubmit = (event) => {
@@ -23,23 +27,67 @@ function Dashboard(props) {
     setQuestion(event.target.value);
   };
   
+  /*
+  * Return all questions temporary might delete
+  */
   async function getAllQuestions() {
     let records = await props.polybase.collection("Question").get();
     console.log(records.data)
     //console.log(records.data)
     setQuestions(records.data);
-  }
+  } /* getAllQuestions() */
+
+  /*
+  * Get all the revealed predictions of friends
+  */
+  async function getFriendsHunch() {
+    let friends = await props.polybase.collection("User").record(props.user.data.id).get();
+    friends = friends.data.friends;
+    //for every element in friends array
+    let final = [];
+    for (let i = 0; i < friends.length; i++) {
+      //get the revealed hunches of the friend
+      let record = await props.polybase.collection("RevealedHunch").where("owner", "==", friends[i]).get();
+      //append all elements of record to final
+      final = final.concat(record.data);
+    }
+    console.log(final);
+    setFriendsHunch(final);
+
+
+
+
+  } /* getFriendsHunch() */
+  /*
+  * Return all hunches(revealed or unrevealed)
+  */
+    async function getHunch() {
+      await props.login();
+      const prediction = await props.polybase.collection("Prediction").get();
+      //console.log(prediction);
+      //set hunches if not null
+      if (prediction.data.length > 0){
+        setHunches(prediction.data);
+      }
+      return prediction;
+    } /* getHunch() */
+  
+
 
   return (
     <div>
 
     <Private
      user = {props.user}
+     hunches = {hunches}
+     commitHunch = {props.commitHunch}
+     revealHunch = {props.revealHunch}
     />
 
      <Profile setName = {props.setName}
       user = {props.user}
       addFriend = {props.addFriend}
+      friendsHunch = {friendsHunch}
       />
 
     <div className="bg-teal-200 flex justify-between items-center snap-start">

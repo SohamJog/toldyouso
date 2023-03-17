@@ -1,19 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function Private(props) {
   const user = props.user.data;
   const [hunch, setHunch] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // TODO: Submit hunch to backend
-    //Smart contract: commit hunch with commit time 0
-    //Polybase: add hunch to user's unreleased hunches
-    //Make sure that only the user can read this data
-    //In unreleased hunches component, show the hunch and a button to release it
+    await props.commitHunch(hunch);
     console.log(`Submitting hunch: ${hunch}`);
     setHunch('');
   };
+ 
+  /*
+  * Reveal a hunch to the blockchain.
+  */
+  async function revealHunch(reveal) {
+    const name = reveal.data.name;
+    const random = reveal.data.random;
+    await props.revealHunch(name, random);
+  } /* revealHunch() */
+
 
   return (
     <div className="max-w-2xl mx-auto mt-12">
@@ -32,18 +38,44 @@ function Private(props) {
             rows="3"
             placeholder="What's your hunch?"
           />
-          <div className="flex justify-between items-center mt-4">
-            <div className="flex items-center space-x-3">
-            
-            </div>
-            <button
+          <button
               type="submit"
               className="py-2 px-4 rounded-md font-bold bg-teal-500 text-white"
             >
               Commit!
             </button>
-          </div>
+          
         </form>
+
+        
+
+        <div className="flex justify-between items-center mt-4">
+          <div className="flex flex-col space-y-4 w-full lg:w-1/2">
+            {props.hunches.map((_hunch, index) => (
+              _hunch.data.released == 0 && (
+              <div key={index} className="bg-white shadow-lg rounded-md p-4 w-full">
+                <div className="flex items-start">
+                  <div>
+                    <p className="text-xs text-gray-500">{new Date(_hunch.data.created * 1000).toLocaleString()}</p>
+                  </div>
+                </div>
+                <div className="mt-2">
+                  <p className="text-sm font-normal text-gray-800">{_hunch.data.name}</p>
+                </div>
+                <div className="flex justify-between items-center mt-2">
+                  <button onClick={() => revealHunch(_hunch)} className="py-1 px-2 rounded-md font-bold bg-teal-500 text-white text-xs">Reveal Now</button>
+                </div>
+              </div>
+              )
+            ))}
+          </div>
+        </div>
+
+
+
+
+
+
       </div>
     </div>
   );

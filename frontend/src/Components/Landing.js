@@ -36,7 +36,7 @@ function Landing(props) {
         </div>
         <div className="flex flex-col lg:flex-row-reverse items-center justify-between mb-20">
           <div className="lg:w-1/2 mb-10 lg:mb-0">
-            <h2 className="text-4xl font-bold mb-4">Verify the truth with UMA protocol</h2>
+            <h2 className="text-4xl font-bold mb-4">Verify with the UMA protocol</h2>
             <p className="text-lg text-gray-800">Our app uses the UMA protocol to ensure that the prediction outcome is verified and indisputable. You can trust that the truth will always prevail with Toldyouso.</p>
           </div>
           <div className="lg:w-1/2">

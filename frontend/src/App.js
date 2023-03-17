@@ -10,7 +10,11 @@ import contractABI from "./contractABI.json";
 const { keccak256 } = require("@ethersproject/keccak256");
 const { toUtf8Bytes } = require("@ethersproject/strings");
 
-
+//TODOS:
+//Smart contract: commit hunch with commit time 0
+    //Polybase: add hunch to user's unreleased hunches
+    //Make sure that only the user can read this data
+    //In unreleased hunches component, show the hunch and a button to release it
 
 
 const contractAddress = "0xCc22175aeC868a7A2e8DD00a6E848F78C51971FB"; // contract address
@@ -60,7 +64,7 @@ export const App = () => {
       await polybase.collection("Question").create([tag, name, wallet]);
     }
     catch (e) {
-      console.log(e);
+      //console.log(e);
     }
   } /* createQuestion() */
 
@@ -76,7 +80,7 @@ export const App = () => {
     const walletTemp = await signer.getAddress();
 
     setWallet(walletTemp);
-    console.log("wallet: ", walletTemp);
+    //console.log("wallet: ", walletTemp);
     //console.log("wallet:");
    // console.log(walletTemp);
     polybase.signer(async (data) => {
@@ -85,13 +89,13 @@ export const App = () => {
         sig: await signer.signMessage(data),
       };
     });
-    console.log("logged in");
+   // console.log("logged in");
     let records = await polybase.collection("User").where("wallet", "==", walletTemp).get();
-    console.log(records);
+   // console.log(records);
     //check if records is empty
     
     if (records.data == null || records.data.length == 0) {
-      console.log("creating user...");
+      //console.log("creating user...");
       await createUser(walletTemp);
     }
     records = await polybase.collection("User").where("wallet", "==", walletTemp).get();
@@ -105,7 +109,7 @@ export const App = () => {
   *
   */
   async function logout() {
-    console.log(user)
+    //console.log(user)
     polybase.signer(null);
     setUser(null);
     localStorage.removeItem("user");
@@ -168,37 +172,59 @@ export const App = () => {
       const pubkey = JSON.parse(localStorage.getItem("user")).data.publicKey;
       const name = statement;
       const created = Math.floor(Date.now() / 1000);
+      let msgId = await contract.messageCount();
+      msgId = msgId.toNumber();
       
-      await polybase.collection("Prediction").create([random, pubkey, name, created]);
+      console.log("msgId: ", msgId)
+      
+      //add the hash to the blockchain, comment out for now
+
+      const commitment = keccak256(
+        toUtf8Bytes(statement + random)
+      );
+      await contract.commitMessage(commitment, 0);
+
+      //add it to polybase
+      await polybase.collection("Prediction").create([random, pubkey, name, created, msgId]);
       
       console.log("created prediction");
       //await polybase.collection("Hunch").create([random, statement, revealDate, pubkey]);
     }
     catch (e) {
       console.log(e);
-    }
-
-    /*
-    const commitment = keccak256(
-      toUtf8Bytes(statement + random)
-    );
-    await contract.commitMessage(commitment, 0);
-    */
+    }  
 
   } /* commitHunch() */
 
-  /*
-  * Reveal a hunch to the blockchain.
-  */
-  async function revealHunch() {
-    await login();
-    const prediction = await polybase.collection("Prediction").get();
-    console.log(prediction);
-  }
-
+/*
+  * Reveals a hunch to the blockchain
+*/
+  async function revealHunch(message, random) {
+    try {
+      
+      await login();
+      await polybase.collection("Prediction").record(random).call("release");
+      const msgId = await polybase.collection("Prediction").record(random).get();
+      
+      console.log(msgId);
+      const storedCommitment = await contract.revealMessage(
+        msgId.data.msgId,
+        message,
+        random,
+        //{ from: account }
+      );
+      console.log("revealed hunch");
+      const id = randomString();
+      //polybase functionality
+      await polybase.collection("RevealedHunch").create([id, msgId.data.name, wallet, msgId.data.created]);
+    }
+    catch (e) {
+      console.log(e);
+    }
+  } /* revealHunch() */
  
   /*
-  *
+  * Returns the message count from contract. Use only for testing purposes
   */
   async function test () {
     const messageCount = await contract.messageCount();
@@ -210,7 +236,7 @@ export const App = () => {
   * Sets the name of the user
   */
  async function setName (name) {
-  console.log(user.data.id);
+  ////console.log(user.data.id);
     await polybase.collection("User").record(user.data.id).call("setName", [name]);
  } /* setName() */
 
@@ -224,9 +250,11 @@ export const App = () => {
   return (
     <div className="bg-teal-100">
       {user? <Dashboard 
-      createQuestion = {createQuestion} polybase = {polybase} logout = {logout} setName = {setName} user = {user} addFriend = {addFriend} wallet = {wallet}
+      createQuestion = {createQuestion} polybase = {polybase} logout = {logout} setName = {setName} user = {user} addFriend = {addFriend} wallet = {wallet} login = {login}
+        commitHunch = {commitHunch} revealHunch = {revealHunch}
         /> :<Landing
         login = {login}
+        
         />}
 
       <button onClick={()=>login()}>
@@ -253,32 +281,12 @@ export const App = () => {
         </button>
         <button onClick={()=>commitHunch("Brandom")}>
           Generate Hunch!
-        </button>
-        <button onClick={()=>revealHunch()}>
-          Reveal Hunch
+        
+        
         </button>
         {/* <button onClick={()=>printAll()}>Get all questions</button> */}
       </div>
     
-    
-    // <div>
-    //   <h1>Polybase React Demo</h1>
-    //   <button onClick={()=>createQuestion("Whats in a name?")}>
-    //     Create Question!
-    //   </button>
-    //   <button onClick={()=>login()}>
-    //     Login!
-    //   </button>
-    //   <button onClick={()=>logout()}>
-    //     Logout!
-    //   </button>
-    //   <button onClick={()=>createUser()}>
-    //     Create User!
-    //   </button>
-    //   <button onClick={()=>deleteUser()}>
-    //     Delete User!
-    //   </button>
-    // </div>
   );
 };
 

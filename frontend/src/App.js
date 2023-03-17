@@ -19,8 +19,12 @@ const { toUtf8Bytes } = require("@ethersproject/strings");
 
 const contractAddress = "0xCc22175aeC868a7A2e8DD00a6E848F78C51971FB"; // contract address
 const provider = new ethers.providers.Web3Provider(window.ethereum);
+
 const signer = provider.getSigner();
+
 const contract = new ethers.Contract(contractAddress, contractABI, signer);
+
+
 
 
 
@@ -73,35 +77,41 @@ export const App = () => {
   */
   async function login() {
 
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    const account = accounts[0];
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const walletTemp = await signer.getAddress();
-
-    setWallet(walletTemp);
-    //console.log("wallet: ", walletTemp);
-    //console.log("wallet:");
-   // console.log(walletTemp);
-    polybase.signer(async (data) => {
-      return {
-        h: 'eth-personal-sign',
-        sig: await signer.signMessage(data),
-      };
-    });
-   // console.log("logged in");
-    let records = await polybase.collection("User").where("wallet", "==", walletTemp).get();
-   // console.log(records);
-    //check if records is empty
-    
-    if (records.data == null || records.data.length == 0) {
-      //console.log("creating user...");
-      await createUser(walletTemp);
+    try {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const account = accounts[0];
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const walletTemp = await signer.getAddress();
+  
+      setWallet(walletTemp);
+      //console.log("wallet: ", walletTemp);
+      //console.log("wallet:");
+     // console.log(walletTemp);
+      polybase.signer(async (data) => {
+        return {
+          h: 'eth-personal-sign',
+          sig: await signer.signMessage(data),
+        };
+      });
+     // console.log("logged in");
+      let records = await polybase.collection("User").where("wallet", "==", walletTemp).get();
+     // console.log(records);
+      //check if records is empty
+      
+      if (records.data == null || records.data.length == 0) {
+        //console.log("creating user...");
+        await createUser(walletTemp);
+      }
+      records = await polybase.collection("User").where("wallet", "==", walletTemp).get();
+  
+      setUser(records.data[0]);
+      localStorage.setItem("user", JSON.stringify(records.data[0]));
     }
-    records = await polybase.collection("User").where("wallet", "==", walletTemp).get();
-
-    setUser(records.data[0]);
-    localStorage.setItem("user", JSON.stringify(records.data[0]));
+    catch {
+      console.log("error");
+    }
+   
   } /* login() */
 
 
@@ -247,7 +257,7 @@ export const App = () => {
     await polybase.collection("User").record(user.data.id).call("addFriend", [friend]);
   } /* addFriend() */ 
 
-  
+
   return (
     <div className="bg-teal-100">
       {user? <Dashboard 

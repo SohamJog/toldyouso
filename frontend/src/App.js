@@ -44,22 +44,22 @@ export const App = () => {
   });
   
   useEffect(() => {
-    if (window.ethereum) {
-      // Create a new Web3Provider with the window.ethereum object
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      setProvider(provider);
+    // if (window.ethereum) {
+    //   // Create a new Web3Provider with the window.ethereum object
+    //   const provider = new ethers.providers.Web3Provider(window.ethereum);
+    //   setProvider(provider);
 
-      // Get the signer from the provider
-      const signer = provider.getSigner();
-      setSigner(signer);
+    //   // Get the signer from the provider
+    //   const signer = provider.getSigner();
+    //   setSigner(signer);
 
-      // Create a new Contract with the contract address, ABI, and signer
-      const contract = new ethers.Contract(contractAddress, contractABI, signer);
-      setContract(contract);
-      console.log(signer);
-    } else {
-      console.log('Please install a wallet to use this app.');
-    }
+    //   // Create a new Contract with the contract address, ABI, and signer
+    //   const contract = new ethers.Contract(contractAddress, contractABI, signer);
+    //   setContract(contract);
+    //   console.log(signer);
+    // } else {
+    //   console.log('Please install a wallet to use this app.');
+    // }
     const savedUser = localStorage.getItem("user");
     if (savedUser) {
       setUser(JSON.parse(savedUser));
@@ -85,11 +85,7 @@ export const App = () => {
     } else {
       console.log('Please install a wallet to use this app.');
     }
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-      setWallet(JSON.parse(savedUser).data.wallet);
-    }
+    
   }
 
   // create a function for random string for a tag

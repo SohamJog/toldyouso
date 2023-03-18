@@ -18,11 +18,13 @@ const { toUtf8Bytes } = require("@ethersproject/strings");
 
 
 const contractAddress = "0xCc22175aeC868a7A2e8DD00a6E848F78C51971FB"; // contract address
-const provider = new ethers.providers.Web3Provider(window.ethereum);
+const umaContractAddress = "0xc76acAC7D84588F9E61033756f87556591c7501c"; // uma's contract address
 
-const signer = provider.getSigner();
+// const provider = new ethers.providers.Web3Provider(window.ethereum);
 
-const contract = new ethers.Contract(contractAddress, contractABI, signer);
+// const signer = provider.getSigner();
+
+// const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
 
 
@@ -33,12 +35,31 @@ export const App = () => {
   
   const [user, setUser] = useState(null);
   const [wallet, setWallet] = useState(null);
+  const [provider, setProvider] = useState(null);
+  const [signer, setSigner] = useState(null);
+  const [contract, setContract] = useState(null);
 
   const polybase = new Polybase({
     defaultNamespace: "pk/0xef0bffa8495694673bf3c1c01413e5ffe987b2fdc47a37b594f5688953c2d53dfc2d2f0a10b91d96354eaac73f6644702b0d7dfbc387dfa632938854eefcf3ef/test_app",
   });
   
   useEffect(() => {
+    if (window.ethereum) {
+      // Create a new Web3Provider with the window.ethereum object
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      setProvider(provider);
+
+      // Get the signer from the provider
+      const signer = provider.getSigner();
+      setSigner(signer);
+
+      // Create a new Contract with the contract address, ABI, and signer
+      const contract = new ethers.Contract(contractAddress, contractABI, signer);
+      setContract(contract);
+      console.log(signer);
+    } else {
+      console.log('Please install a wallet to use this app.');
+    }
     const savedUser = localStorage.getItem("user");
     if (savedUser) {
       setUser(JSON.parse(savedUser));
@@ -46,6 +67,30 @@ export const App = () => {
     }
   }, []);
 
+
+  function setEverything() {
+    if (window.ethereum) {
+      // Create a new Web3Provider with the window.ethereum object
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      setProvider(provider);
+
+      // Get the signer from the provider
+      const signer = provider.getSigner();
+      setSigner(signer);
+
+      // Create a new Contract with the contract address, ABI, and signer
+      const contract = new ethers.Contract(contractAddress, contractABI, signer);
+      setContract(contract);
+      console.log(signer);
+    } else {
+      console.log('Please install a wallet to use this app.');
+    }
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+      setWallet(JSON.parse(savedUser).data.wallet);
+    }
+  }
 
   // create a function for random string for a tag
   function randomString() {
@@ -177,6 +222,7 @@ export const App = () => {
       USER: 
       {"data":{"friends":["0x6ea5CB879208496D27aCfc6319eCD3Dad31fd717"],"id":"tRzjTFIn0QzME9VCo1tisOSlxcejbvms","name":"Amod","publicKey":{"alg":"ES256K","crv":"secp256k1","kty":"EC","use":"sig","x":"9XliR0PkZ3gU5AipzqjKVz_GAaV9Jd1-24VYqcw80tI=","y":"4zgOwfYXY5ixPcRBrwmC0iKpNT1mygle_cZaF3Ikg9Q="},"wallet":"0x918e61236aC6FbB5EAa57a88709E2Fa43E932DE1"},"block":{"hash":"0x0000000000000000000000000000000000000000000000000000000000000000"}}
       */
+     console.log("committing hunch");
      await login();
       const random  = randomString();
       const pubkey = JSON.parse(localStorage.getItem("user")).data.publicKey;
@@ -238,7 +284,7 @@ export const App = () => {
   */
   async function test () {
     const messageCount = await contract.messageCount();
-    console.log('Message count:', messageCount);
+    console.log('Message count:', messageCount.toNumber());
   } /* test() */
 
 
@@ -260,7 +306,9 @@ export const App = () => {
 
   return (
     <div className="bg-teal-100">
+      <button onClick={() => test()}>test</button>
       {user? <Dashboard 
+      setEverything = {setEverything}
       createQuestion = {createQuestion} polybase = {polybase} logout = {logout} setName = {setName} user = {user} addFriend = {addFriend} wallet = {wallet} login = {login}
         commitHunch = {commitHunch} revealHunch = {revealHunch}
         /> :<Landing

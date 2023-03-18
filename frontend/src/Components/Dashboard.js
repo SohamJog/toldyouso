@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import logo from '../Assets/logo_2.png';
+import logo from '../Assets/logo_2.jpeg';
 import Profile from './Profile.js';
 import Private from "./Private.js";
 import Navbar from "./Navbar.js";
@@ -15,6 +15,7 @@ function Dashboard(props) {
 
   useEffect(() => {
     //getAllQuestions();
+    props.setEverything();
     getHunch();
     getFriendsHunch();
     //console.log(questions);

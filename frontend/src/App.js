@@ -7,6 +7,7 @@ import * as polybase_auth from "@polybase/auth";
 import Landing from "./Components/Landing.js";
 import Dashboard from "./Components/Dashboard.js";
 import contractABI from "./contractABI.json";
+import umaABI from "./umaABI.json";
 const { keccak256 } = require("@ethersproject/keccak256");
 const { toUtf8Bytes } = require("@ethersproject/strings");
 
@@ -18,7 +19,7 @@ const { toUtf8Bytes } = require("@ethersproject/strings");
 
 
 const contractAddress = "0xCc22175aeC868a7A2e8DD00a6E848F78C51971FB"; // contract address
-const umaContractAddress = "0xc76acAC7D84588F9E61033756f87556591c7501c"; // uma's contract address
+const umaContractAddress = "0x42CFe88D21ad6537198Ab3e732f6Cd99f3d50411"; // uma's contract address
 
 // const provider = new ethers.providers.Web3Provider(window.ethereum);
 

@@ -79,6 +79,33 @@ function Private(props) {
         </div>
 
 
+          {/**  ///////////////////////////////   */}
+        <div className='py-12'>
+          <h2 className="text-2xl font-bold mb-4">Your released predictions:</h2>
+        </div>
+
+
+        <div className="flex justify-between items-center mt-4">
+          <div className="flex flex-col space-y-4 w-full lg:w-1/2">
+            {props.hunches.map((_hunch, index) => (
+              _hunch.data.released == 1 && (
+              <div key={index} className="bg-white shadow-lg rounded-md p-4 w-full">
+                <div className="flex items-start">
+                  <div>
+                    <p className="text-xs text-gray-500">{new Date(_hunch.data.created * 1000).toLocaleString()}</p>
+                  </div>
+                </div>
+                <div className="mt-2">
+                  <p className="text-sm font-normal text-gray-800">{_hunch.data.name}</p>
+                </div>
+                <div className="flex justify-between items-center mt-2">
+                  <button onClick={()=>{}} className="py-1 px-2 rounded-md font-bold bg-teal-500 text-white text-xs">Verify with UMA!</button>
+                </div>
+              </div>
+              )
+            ))}
+          </div>
+        </div>        
 
 
 

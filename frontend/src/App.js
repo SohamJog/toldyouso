@@ -67,6 +67,11 @@ export const App = () => {
     }
   }, []);
 
+  //function to getname from wallet 
+  async function getNameFromWallet(walletAddress) {
+    let records = await polybase.collection("User").where("wallet", "==", walletAddress).get();
+    return records.data[0].data.name;
+  }
 
   function setEverything() {
     if (window.ethereum) {
@@ -307,10 +312,13 @@ export const App = () => {
       setEverything = {setEverything}
       createQuestion = {createQuestion} polybase = {polybase} logout = {logout} setName = {setName} user = {user} addFriend = {addFriend} wallet = {wallet} login = {login}
         commitHunch = {commitHunch} revealHunch = {revealHunch}
+        getNameFromWallet = {getNameFromWallet}
         /> :<Landing
         login = {login}
         
         />}
+
+        
       </div>
       );
     };

@@ -13,6 +13,7 @@ function Dashboard(props) {
   const [friendsHunch, setFriendsHunch] = useState([]);
 
 
+
   useEffect(() => {
     //getAllQuestions();
     props.setEverything();
@@ -90,6 +91,7 @@ function Dashboard(props) {
       user = {props.user}
       addFriend = {props.addFriend}
       friendsHunch = {friendsHunch}
+      getNameFromWallet = {props.getNameFromWallet}
       />
     <div className="border-t-2 border-gray-500 my-8"></div>
 

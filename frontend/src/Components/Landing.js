@@ -1,5 +1,7 @@
 import React from 'react';
 import logo from '../Assets/logo_2.jpeg';
+
+
 //import index.css
 import '../index.css';
 import prediction from '../Assets/Prediction.jpeg';
@@ -72,8 +74,8 @@ function Landing(props) {
       <div className="bg-cyan-600 px-10 py-6 flex justify-between items-center">
         <p className="text-white">&copy; 2023 Toldyouso. All rights reserved.</p>
         <div className="flex items-center">
-          <p className="text-white mr-4">Follow us:</p>
-          <img className="w-6 h-6" src="../Assets/twitter.svg" alt="Twitter"/>
+          {/* <p className="text-white mr-4">Follow us:</p>
+          <img className="w-6 h-6" src={BsTwitter} alt="Twitter"/> */}
         </div>
       </div>
     </div>

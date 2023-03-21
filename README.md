@@ -24,7 +24,7 @@ Instructions for how to install and run your project.
 There are a bunch of prerequisites that you'll find in package.json. Run `npm install` and `cd frontend npm install`
 
 ## Installing
-Clone the project repository locally.
+Clone the project repository locally.\\
 `git clone <repository link>`
 
 ## Deployment

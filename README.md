@@ -10,10 +10,7 @@ Have you ever made a prediction that you knew was going to come true, but nobody
 - [Deployment](#deployment)
 - [Built With](#built-with)
 - [Contributing](#contributing)
-- [Versioning](#versioning)
-- [Authors](#authors)
-- [License](#license)
-- [Acknowledgments](#acknowledgments)
+
 
 ## Getting Started
 
@@ -21,36 +18,34 @@ Instructions for how to install and run your project.
 
 ## Prerequisites
 
-There are a bunch of prerequisites that you'll find in package.json. Run `npm install` and `cd frontend npm install`
+You should have Metamask connected to the Scroll Alpha TestNet and the Goerli TestNet. Here are a few links to help you get started:
+
+https://goerlifaucet.com/
+
+https://scroll.io/alpha/bridge
+
+You'll find all the dependencies in package.json. Run `npm install` and `cd frontend npm install` to install all the dependencies.
 
 ## Installing
-Clone the project repository locally.\\
+Clone the project repository locally.
+
 `git clone <repository link>`
 
 ## Deployment
 
-If your project is meant to be deployed, include instructions for how to do so.
+Run `cd frontend` and `npm start` to start the project locally. 
 
 ## Built With
 
-List any tools or frameworks you used to create your project.
+1. Polybase: I used Polybase as a database for the app. Polybase is a web3 based secure database. You can find a copy of the Polybase schema in schema.txt
+2. Uma: Uma is an oracle to prove human-verifiable statements. The functionality using uma is still not complete. You can, however call contract functions from your Told You So profile.
+3. Scroll: The TYS contract is deployed on the Scroll Alpha TestNet. Scroll guarantees lower costs, and higher throughput per second. 
+4. Hardhat: I used Hardhat for testing the contracts. You can find the contracts as well as detailed tests in the `contracts` folder.
+5. React.js: I built the front-end using React.js. You can find most of the app functions in `frontend/App.js`. You may also find all the React components in `frontend/components`.
 
 ## Contributing
 
-Explain how others can contribute to your project, if you are accepting contributions.
+Feel free to suggest any suggestions. You may also fork this project and add your own functionality.
 
-## Versioning
 
-If you are using version control, explain how to access your project's repository and how to view its history.
 
-## Authors
-
-List the names of the people who contributed to your project.
-
-## License
-
-Explain what license your project is released under.
-
-## Acknowledgments
-
-Give credit to any resources or people that helped you create your project.

@@ -45,7 +45,7 @@ Run `cd frontend` and `npm start` to start the project locally.
 
 ## Contributing
 
-Feel free to suggest any suggestions. You may also fork this project and add your own functionality.
+Feel free to suggest any features. You may also fork this project and add your own functionality.
 
 
 

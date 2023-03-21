@@ -1,13 +1,12 @@
 # Told You So
 
-Introducing a new social media experience
+Have you ever made a prediction that you knew was going to come true, but nobody believed you? With our new social media platform, you can store your predictions on the blockchain and reveal them to the world when the time is right. Don't just make predictions, prove that you called it first with our secure and innovative platform. Check out version 1 here: https://sunny-sable-203f43.netlify.app/
 
 ## Table of Contents
 
 - [Getting Started](#getting-started)
 - [Prerequisites](#prerequisites)
 - [Installing](#installing)
-- [Running the tests](#running-the-tests)
 - [Deployment](#deployment)
 - [Built With](#built-with)
 - [Contributing](#contributing)
@@ -22,15 +21,11 @@ Instructions for how to install and run your project.
 
 ## Prerequisites
 
-List any software or hardware that is required to run your project.
+There are a bunch of prerequisites that you'll find in package.json. Run `npm install` and `cd frontend npm install`
 
 ## Installing
-
-Step-by-step instructions for how to install your project.
-
-## Running the tests
-
-Explain how to run any tests that you have included with your project.
+Clone the project repository locally.
+`git clone <repository link>`
 
 ## Deployment
 

@@ -99,7 +99,7 @@ function Private(props) {
                   <p className="text-sm font-normal text-gray-800">{_hunch.data.name}</p>
                 </div>
                 <div className="flex justify-between items-center mt-2">
-                  <button onClick={()=>{}} className="py-1 px-2 rounded-md font-bold bg-teal-500 text-white text-xs">Verify with UMA!</button>
+                  <button onClick={()=>props.verifyWithUma(_hunch.data.name)} className="py-1 px-2 rounded-md font-bold bg-teal-500 text-white text-xs">Verify with UMA!</button>
                 </div>
               </div>
               )

@@ -100,6 +100,7 @@ function Dashboard(props) {
      hunches = {hunches}
      commitHunch = {props.commitHunch}
      revealHunch = {props.revealHunch}
+     verifyWithUma = {props.verifyWithUma}
     />
 
     

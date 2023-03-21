@@ -72,7 +72,22 @@ export const App = () => {
   async function getNameFromWallet(walletAddress) {
     let records = await polybase.collection("User").where("wallet", "==", walletAddress).get();
     return records.data[0].data.name;
-  }
+  } /* getNameFromWallet() */
+
+  /*
+  * Verifies a message with UMA
+  */
+  async function verifyWithUma(message) {
+    try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(umaContractAddress, umaABI, signer);
+      await contract.assertTruth(message);
+    }
+    catch (e) {
+      console.log(e);
+    }
+  } /* verifyWithUma() */
 
   function setEverything() {
     if (window.ethereum) {
@@ -313,7 +328,7 @@ export const App = () => {
       setEverything = {setEverything}
       createQuestion = {createQuestion} polybase = {polybase} logout = {logout} setName = {setName} user = {user} addFriend = {addFriend} wallet = {wallet} login = {login}
         commitHunch = {commitHunch} revealHunch = {revealHunch}
-        getNameFromWallet = {getNameFromWallet}
+        getNameFromWallet = {getNameFromWallet} verifyWithUma = {verifyWithUma}
         /> :<Landing
         login = {login}
         

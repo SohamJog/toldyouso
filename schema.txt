@@ -1,0 +1,185 @@
+// This is an example collection definition.
+// You should edit it for your use case.
+
+// The language (Polylang) is similar to JavaScript,
+// but semi-colons are mandatory.
+
+// The `collection` keyword defines a named collection.
+// Collection properties define the "columns" in a record.
+
+// @`public` means that the collection is public, anyone can view and read
+// the records in the collection. You can still implement rules on who can 
+// edit the data by defining functions on the collection and checking the public key.
+
+@public
+collection User {
+  // `id` is unique and required on all collections
+  id: string;
+
+  // We will use a public key to authenticate function
+  // calls later
+  publicKey: PublicKey;
+
+  // A mandatory property
+  name: string; 
+  wallet: string;
+  friends?: string[];
+
+  // An optional property denoted with ?
+  age?: number; 
+
+  @index(wallet);
+
+
+  // `constructor` is called when a new record is
+  // created, make sure to assign a value to `this.id`
+  constructor (id: string, wallet: string) {
+    // `this.id` must be assigned in the constructor
+    // `this.id` must be unique in collection
+    this.id = id;
+    this.name ='';
+    this.wallet = wallet;
+    this.friends = [];
+    // You can assign the publicKey of the user who is
+    // creating the record, this can then be used to
+    // control permissions for the record (see below)
+    this.publicKey = ctx.publicKey;
+  }
+
+  // You can add your own functions to determine rules
+  // on who can update the records data
+  function setName (name: string) {
+    // Check if the caller is the original creator of the record.
+    // if (ctx.publicKey != this.publicKey) {
+    //   error('You are not the creator of this record.');
+    // }
+    this.name = name;
+  }
+
+  function addFriend (wallet: string) {
+    this.friends.push(wallet);
+  }
+
+  //delete user
+  function deleteUser () {
+    selfdestruct();
+  }
+  
+}
+
+@public
+  collection RevealedHunch {
+    id: string;
+    name: string;
+    owner: string;//hex public key
+    created: number; //unix timestamp of the date committed
+
+    constructor (id: string, name: string, owner: string, created: number) {
+      this.id = id;
+      this.name = name;
+      this.owner = owner;
+      this.created = created;
+    }
+  }
+
+
+
+
+@public
+  collection Question {
+    id: string;
+    name: string;
+    owner: string;
+    
+    constructor (id: string, name: string, owner: string) {
+      this.id = id;
+      this.name = name;
+      this.owner = owner;
+    }
+    function deleteQuestion () {
+      selfdestruct();
+      }
+  }
+
+//@public
+  collection Prediction {
+    @read creatorPublicKey?: PublicKey;
+    publicKey: PublicKey;
+    id: string;
+    name: string;
+    created: number; //unix timestamp for when it was created at
+    released?: number; //0 if unreleased
+    random: string;
+    msgId: number;
+
+    constructor(id: string, publicKey: PublicKey, name: string, created: number, msgId: number) {
+      this.name = name;
+      this.publicKey = publicKey;
+      this.id = id;
+      this.created = created;
+      this.released = 0;
+      this.random = id;
+      this.creatorPublicKey = ctx.publicKey;
+      this.msgId = msgId;
+    }
+
+    @call(creatorPublicKey)
+    function release () {
+      this.released = 1; 
+    }
+  }
+
+//do not use hunch 
+@public
+  collection Hunch {
+    id: string;
+    name: string;
+    owner: string;
+    time: number;  //unix timestamp for when it should be out
+    constructor (id: string, name: string, time: number, owner: string) {
+      this.id = id;
+      this.name = name;
+      this.owner = owner;
+      this.time = time;
+      
+    }
+    
+  }
+
+
+
+//////////////////////////////
+@public
+  collection Country {
+    id: string;
+    name: string;
+
+    constructor (id: string, name: string) {
+      this.id = id;
+      this.name = name;
+    }
+  }
+
+
+
+@public 
+  collection City {
+    id: string;
+    name: string;
+    country?: string;
+
+    constructor (id: string, name: string) {
+      this.id = id;
+      this.name = name;
+    }
+
+    function setCountry (country: string) {
+      this.country = country;
+    }
+  }
+
+
+
+
+
+  

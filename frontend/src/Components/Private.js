@@ -4,12 +4,15 @@ function Private(props) {
   const user = props.user.data;
   const [hunch, setHunch] = useState('');
 
+  /*
+  * Commit a hunch to the blockchain.
+  */
   const handleSubmit = async (event) => {
     event.preventDefault();
     await props.commitHunch(hunch);
     console.log(`Submitting hunch: ${hunch}`);
     setHunch('');
-  };
+  }; /* handleSubmit() */
  
   /*
   * Reveal a hunch to the blockchain.

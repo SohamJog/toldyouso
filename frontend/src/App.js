@@ -19,7 +19,8 @@ const { toUtf8Bytes } = require("@ethersproject/strings");
 
 
 const contractAddress = "0xCc22175aeC868a7A2e8DD00a6E848F78C51971FB"; // contract address
-const umaContractAddress = "0x42CFe88D21ad6537198Ab3e732f6Cd99f3d50411"; // uma's contract address
+//const umaContractAddress = "0x42CFe88D21ad6537198Ab3e732f6Cd99f3d50411"; // uma's contract address
+const umaContractAddress = "0x42cfe88d21ad6537198ab3e732f6cd99f3d50411"; // uma's contract address
 
 // const provider = new ethers.providers.Web3Provider(window.ethereum);
 
@@ -89,6 +90,9 @@ export const App = () => {
     }
   } /* verifyWithUma() */
 
+  /*
+  * Sets up the app
+  */
   function setEverything() {
     if (window.ethereum) {
       // Create a new Web3Provider with the window.ethereum object
@@ -106,22 +110,23 @@ export const App = () => {
     } else {
       console.log('Please install a wallet to use this app.');
     }
-    
-  }
+  } /* setEverything() */
 
-  // create a function for random string for a tag
+  /*
+  * Creates a random id
+  */
   function randomString() {
     var length = 32;
     var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     var result = '';
     for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
     return result;
-  }
+  } /* randomString() */
 
 
   /**
    * 
-   * @param {*} name
+   * creates a question. Future functionality. 
    */
   async function createQuestion(name) {
     let tag = randomString();
@@ -135,7 +140,7 @@ export const App = () => {
   } /* createQuestion() */
 
   /*
-  *
+  * Logs in. Populates local storage. Sets up polybase signer.
   */
   async function login() {
 
@@ -178,7 +183,7 @@ export const App = () => {
 
 
   /*
-  *
+  * Logout
   */
   async function logout() {
     //console.log(user)
@@ -189,6 +194,9 @@ export const App = () => {
   } /* logout() */
 
 
+  /*
+  * Create a user
+  */
   async function createUser(walletAddress) {
     let tag = randomString();
     try {
@@ -204,7 +212,9 @@ export const App = () => {
 
 
 
-  //deletes a specific record currently hardcoded
+  /*
+  * Delete a user, currently hardcoded 
+  */
   async function deleteUser() {
     try {
       await polybase.collection("User").record("sMBLR1g4Li8fcyiutINpKwO3LuTc3UQE").call("deleteUser");
@@ -323,7 +333,6 @@ export const App = () => {
 
   return (
     <div className="bg-teal-100">
-      <button onClick={() => test()}>test</button>
       {user? <Dashboard 
       setEverything = {setEverything}
       createQuestion = {createQuestion} polybase = {polybase} logout = {logout} setName = {setName} user = {user} addFriend = {addFriend} wallet = {wallet} login = {login}

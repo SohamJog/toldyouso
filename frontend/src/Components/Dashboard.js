@@ -59,10 +59,8 @@ function Dashboard(props) {
     console.log(final);
     setFriendsHunch(final);
 
-
-
-
   } /* getFriendsHunch() */
+  
   /*
   * Return all hunches(revealed or unrevealed)
   */

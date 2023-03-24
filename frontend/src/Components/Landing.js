@@ -21,11 +21,13 @@ function Landing(props) {
         <button onClick={()=>props.login()} className="px-4 py-2 rounded-md font-bold bg-white text-cyan-600 mx-10 my-6 ">Connect Wallet</button>
       </div>
 
+      {/* */}
+
       <div className="container mx-auto px-10 py-12">
         <div className="flex flex-col lg:flex-row items-center justify-between mb-20">
           <div className="lg:w-1/2 mb-10 lg:mb-0">
-            <h2 className="text-4xl font-bold mb-4">Make predictions, keep them secret</h2>
-            <p className="text-lg text-gray-800">With Toldyouso, you can make predictions on anything, from sports matches to politics, and keep them secret until it's time to reveal. Our blockchain-based system ensures that your prediction is immutable and trustworthy.</p>
+            <h2 className="text-4xl font-bold mb-4">Prove Your Predictions: Share Your Prophetic Abilities with the World</h2>
+            <p className="text-lg text-gray-800">Are you a natural at predicting the future? Showcase your prophetic abilities to the world with Toldyouso. Make predictions on anything, from sports matches to politics, and keep them secret until it's time to reveal. Our blockchain-based system ensures immutable and trustworthy predictions.</p>
           </div>
 
           <div className="lg:w-1/2">
@@ -33,27 +35,41 @@ function Landing(props) {
           </div>
 
 
-
+        {/* */}
 
         </div>
         <div className="flex flex-col lg:flex-row-reverse items-center justify-between mb-20">
           <div className="lg:w-1/2 mb-10 lg:mb-0">
-            <h2 className="text-4xl font-bold mb-4">Verify with the UMA protocol</h2>
-            <p className="text-lg text-gray-800">Our app uses the UMA protocol to ensure that the prediction outcome is verified and indisputable. You can trust that the truth will always prevail with Toldyouso.</p>
+            <h2 className="text-4xl font-bold mb-4">How Commit Reveal Schemes Work</h2>
+            <p className="text-lg text-gray-800">
+              <ul className='list-disc'>
+                <li>Step 1. Post the hash of your opinion on-chain to timestamp it.</li>
+                <li>Step 2. When the time is right, and if you are indeed right, reveal your commitment!</li>
+                <li>Step 3. Share the fact that you totally called it, ages before it happened!</li>
+              </ul>
+
+            </p>
           </div>
           <div className="lg:w-1/2">
             <img className="w-80 h-80 rounded-full" src={tick} alt="Verification"/>
           </div>
         </div>
+
+        {/* */}
         <div className="flex flex-col lg:flex-row items-center justify-between">
           <div className="lg:w-1/2 mb-10 lg:mb-0">
-            <h2 className="text-4xl font-bold mb-4">Store your predictions on the blockchain</h2>
-            <p className="text-lg text-gray-800">With our smart contract deployed on Scroll, your prediction is securely stored on the blockchain and cannot be altered. You can prove that you called it first with Toldyouso.</p>
+            <h2 className="text-4xl font-bold mb-4">Secure and Trustworthy Commitment with Blockchain</h2>
+            <p className="text-lg text-gray-800">With our commitment schemes, your predictions are secure and trustworthy, backed by the power of blockchain technology.</p>
+            <p className='text-lg text-gray-800'>Sign Up Now to Start Your Prophetic Portfolio!</p>
           </div>
           <div className="lg:w-1/2">
             <img className="w-full rounded-full" src={blockchain} alt="Blockchain"/>
           </div>
         </div>
+
+
+        
+        {/* */}
 
         <div className="py-20 text-center">
           <h2 className="text-4xl font-bold mb-4">Integrations</h2>

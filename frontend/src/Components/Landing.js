@@ -26,7 +26,7 @@ function Landing(props) {
       <div className="container mx-auto px-10 py-12">
         <div className="flex flex-col lg:flex-row items-center justify-between mb-20">
           <div className="lg:w-1/2 mb-10 lg:mb-0">
-            <h2 className="text-4xl font-bold mb-4">Prove Your Predictions: Share Your Prophetic Abilities with the World</h2>
+            <h2 className="text-4xl font-bold mb-4">Share Your Prophetic Abilities with the World</h2>
             <p className="text-lg text-gray-800">Are you a natural at predicting the future? Showcase your prophetic abilities to the world with Toldyouso. Make predictions on anything, from sports matches to politics, and keep them secret until it's time to reveal. Our blockchain-based system ensures immutable and trustworthy predictions.</p>
           </div>
 

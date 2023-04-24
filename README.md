@@ -4,7 +4,7 @@ Have you ever made a prediction that you knew was going to come true, but nobody
 
 ## Table of Contents
 
-- [Getting Started](#getting-started)
+
 - [Prerequisites](#prerequisites)
 - [Installing](#installing)
 - [Deployment](#deployment)
@@ -12,9 +12,6 @@ Have you ever made a prediction that you knew was going to come true, but nobody
 - [Contributing](#contributing)
 
 
-## Getting Started
-
-Instructions for how to install and run your project.
 
 ## Prerequisites
 
